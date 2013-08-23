@@ -127,7 +127,7 @@ class YouTubeScraper():
         result = []
         next = 'false'
         page = int(get("page", "0"))
-        per_page = (10, 15, 20, 25, 30, 40, 50,)[int(self.settings.getSetting("perpage"))]
+        per_page = (10, 25, 50, 100, 250, 500,)[int(self.settings.getSetting("perpage"))]
 
         if get("page"):
             del params["page"]

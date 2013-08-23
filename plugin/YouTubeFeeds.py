@@ -70,11 +70,10 @@ class YouTubeFeeds():
         self.common.log("", 4)
         get = params.get
         time = "this_week"
-        per_page = self.pluginsettings.itemsPerPage()
+        per_page = get("perPage") if get("perPage") is not None else self.pluginsettings.itemsPerPage()
         region = self.pluginsettings.currentRegion()
-
         page = get("page", "0")
-        start_index = per_page * int(page) + 1
+        start_index = get("startIndex") if get("startIndex") is not None else per_page * int(page) + 1
         url = ""
 
         if (get("feed")):
@@ -144,16 +143,44 @@ class YouTubeFeeds():
                 self.common.log("Login required but auth wasn't set!")
                 return (self.language(30609), 303)
 
-        url = self.createUrl(params)
+        # if perPage > 50, fetch in blocks of max 50, until desired quantity has been read
+        nItems = self.pluginsettings.itemsPerPage()
+        startIndex = nItems * int(get("page", 0)) + 1
+        videos = []
+        
+        while True:
+            perPage = min(50, nItems)
+            params["perPage"] = perPage
+            params["startIndex"] = startIndex
+            url = self.createUrl(params)
+            del params["perPage"]
+            del params["startIndex"]
 
-        if url:
-            self.common.log(repr(url), 4)
-            result = self.core._fetchPage({"link": url, "auth": get("login"), "api": "true"})
+            if url:
+                self.common.log(repr(url))
+                result = self.core._fetchPage({"link": url, "auth": get("login"), "api": "true"})
 
-        if result["status"] != 200:
-            return (result["content"], result["status"])
+            if result["status"] != 200:
+                return (result["content"], result["status"])
 
-        videos = self.core.getVideoInfo(result["content"], params)
+            lastPage = False
+            newVideos = self.core.getVideoInfo(result["content"], params)
+            self.common.log("# items: "+repr(len(newVideos)))
+            if len(newVideos) == perPage + 1 and nItems > perPage:
+                self.common.log("  removing next page link between concatenated pages")
+                newVideos = newVideos[:-1]
+                nNewVideos = perPage # correct for "next page" link
+            else:
+                lastPage = True
+            nNewVideos = len(newVideos)
+            
+            videos = videos + newVideos
+                        
+            startIndex = startIndex + nNewVideos
+            nItems = nItems - nNewVideos
+            if lastPage:
+                self.common.log("DONE at "+repr(len(videos))+" of requested "+repr(self.pluginsettings.itemsPerPage())+", remaining "+repr(nItems))
+                break
 
         if len(videos) == 0:
             return (videos, 303)
