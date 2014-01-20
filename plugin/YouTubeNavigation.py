@@ -120,6 +120,10 @@ class YouTubeNavigation():
         get = params.get
         if (get("action") == "settings"):
             self.login.login(params)
+        if (get("action") == "link_account"):
+            self.login.linkAccount(params)
+        if (get("action") == "unlink_account"):
+            self.login.unlinkAccount(params)
         if (get("action") in ["delete_search", "delete_disco"]):
             self.storage.deleteStoredSearch(params)
         if (get("action") in ["edit_search", "edit_disco"]):

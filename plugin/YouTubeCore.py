@@ -564,42 +564,6 @@ class YouTubeCore():
 
         return False
 
-    def _oRefreshToken(self):
-        self.common.log("")
-        # Refresh token
-        if self.settings.getSetting("oauth2_refresh_token"):
-            url = "https://accounts.google.com/o/oauth2/token"
-            data = {"client_id": "208795275779.apps.googleusercontent.com",
-                "client_secret": "sZn1pllhAfyonULAWfoGKCfp",
-                "refresh_token": self.settings.getSetting("oauth2_refresh_token"),
-                "grant_type": "refresh_token"}
-            self.settings.setSetting("oauth2_access_token", "")
-            ret = self._fetchPage({"link": url, "no-language-cookie": "true", "url_data": data})
-            if ret["status"] == 200:
-                oauth = ""
-                try:
-                    oauth = json.loads(ret["content"])
-                except:
-                    self.common.log("Except: " + repr(ret))
-                    return False
-
-                self.common.log("- returning, got result a: " + repr(oauth))
-
-                self.settings.setSetting("oauth2_access_token", oauth["access_token"])
-                self.settings.setSetting("oauth2_expires_at", str(int(oauth["expires_in"]) + time.time()) )
-                self.common.log("Success")
-                return True
-            else:
-                self.common.log("Failure, Trying a clean login")
-                if isinstance(self.login, str):
-                    self.login = sys.modules["__main__"].login
-                self.login.login({"new": "true"})
-            return False
-
-        self.common.log("didn't even try")
-
-        return False
-
     def performNewLogin(self):
         self.common.log("")
         if isinstance(self.login, str):
@@ -624,7 +588,9 @@ class YouTubeCore():
 
         if expire_at <= now:
             self.common.log("Oauth expired refreshing")
-            self._oRefreshToken()
+            if isinstance(self.login, str):
+                self.login = sys.modules["__main__"].login
+            self.login.refreshToken()
 
     def _getAuth(self):
         self.common.log("")
