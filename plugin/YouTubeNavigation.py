@@ -119,7 +119,7 @@ class YouTubeNavigation():
         self.common.log(params, 3)
         get = params.get
         if (get("action") == "settings"):
-            self.login.login(params)
+            self.settings.openSettings(params)
         if (get("action") == "link_account"):
             self.login.linkAccount(params)
         if (get("action") == "unlink_account"):
