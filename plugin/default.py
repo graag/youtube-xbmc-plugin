@@ -36,7 +36,7 @@ author = "TheCollective"
 url = "www.xbmc.com"
 
 # xbmc hooks
-settings = xbmcaddon.Addon(id='plugin.video.youtube.beta')
+settings = xbmcaddon.Addon(id='plugin.video.youtube.gsilva')
 language = settings.getLocalizedString
 dbg = settings.getSetting("debug") == "true"
 dbglevel = 3
