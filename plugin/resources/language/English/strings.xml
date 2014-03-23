@@ -66,8 +66,8 @@
     <string id="30059">My History</string>
 
     <!-- Plugin settings strings -->
-    <string id="30200">Username</string>
-    <string id="30201">Password</string>
+    <string id="30200">Link Account</string>
+    <string id="30201">Unlink Account</string>
     <string id="30203">All time</string>
     <string id="30204">Today</string>
     <string id="30205">This week</string>

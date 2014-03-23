@@ -3,8 +3,18 @@
 
   <!-- General -->
   <category label="30218">
-    <setting id="username" type="text" label="30200" default="" />
-    <setting id="user_password" type="text" option="hidden" label="30201" enable="!eq(-1,)" default="" />
+    <setting id="oauth2_expires_at" type="text" default="" option="hidden"
+             visible="false" />
+    <setting id="oauth2_access_token" type="text" default="" option="hidden"
+             visible="false" />
+    <setting id="oauth2_refresh_token" type="text" default="" option="hidden"
+             visible="false" />
+    <setting type="action"
+             action="RunScript(plugin.video.youtube.beta, 0, action=link_account)"
+             label="30200" visible="eq(-2,)" />
+    <setting type="action"
+             action="RunScript(plugin.video.youtube.beta, 0, action=unlink_account)"
+             label="30201" visible="!eq(-3,)" />
     <setting type="sep" />
     <setting id="safe_search" type="enum" label="30209" lvalues="30277|30219|30220" default="1" />    
     <setting id="hd_videos" type="enum" label="30208" lvalues="30213|30215|30216|30217" default="2" />

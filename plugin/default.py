@@ -108,7 +108,7 @@ if (__name__ == "__main__" ):
     navigation = YouTubeNavigation.YouTubeNavigation()
 
     if (not settings.getSetting("firstrun")):
-        login.login()
+        login.linkAccount()
         settings.setSetting("firstrun", "1")
 
     if (not sys.argv[2]):
