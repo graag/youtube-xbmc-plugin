@@ -62,9 +62,9 @@ class YouTubeLogin():
         deviceCode = json.loads(ret["content"])
 
         progress = self.xbmcgui.DialogProgress()
-        progress.create("hi",
+        progress.create("YouTube Authorize",
                         "Go to {0}".format(deviceCode["verification_url"]),
-                        "and enter this code:", deviceCode["user_code"])
+                        "and enter this code: ", deviceCode["user_code"])
         print repr(deviceCode)
 
         while True:
@@ -93,7 +93,7 @@ class YouTubeLogin():
         self.settings.setSetting("oauth2_refresh_token", poll["refresh_token"])
 
         dialog = self.xbmcgui.Dialog()
-        dialog.ok("hi", "you did it!")
+        dialog.ok("YouTube Authorize", "Authorization Completed")
         print repr(poll)
 
         return "", 200
