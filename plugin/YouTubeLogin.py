@@ -112,7 +112,7 @@ class YouTubeLogin():
         refresh_token = self.settings.getSetting("oauth2_refresh_token")
         if refresh_token:
             self.settings.setSetting("oauth2_access_token", "")
-            ret = self._fetchPage({
+            ret = self.core._fetchPage({
                     "link": self.urls["oauth_api_token"],
                     "no-language-cookie": "true",
                     "url_data": {
