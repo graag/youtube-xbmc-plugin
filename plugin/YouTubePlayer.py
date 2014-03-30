@@ -216,7 +216,10 @@ class YouTubePlayer():
             return video_url
 
         if get("action") != "download" and video_url.find("rtmp") == -1:
-            video_url += '|' + urllib.urlencode({'User-Agent':self.common.USERAGENT})
+            video_url += '|' + urllib.urlencode({
+                'User-Agent':self.common.USERAGENT,
+                "SSLCipherList":"DEFAULT:RC4-SHA", # Recent versions of libcurl disable RC4-SHA by default.
+                })
 
         self.common.log(u"Done")
         return video_url
