@@ -64,7 +64,7 @@ class YouTubeLogin():
         progress = self.xbmcgui.DialogProgress()
         progress.create("YouTube Authorize",
                         "Go to {0}".format(deviceCode["verification_url"]),
-                        "and enter this code: ", deviceCode["user_code"])
+                        "and enter this code: {0}".format(deviceCode["user_code"]))
         print repr(deviceCode)
 
         while True:
