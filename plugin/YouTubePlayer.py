@@ -104,9 +104,10 @@ class YouTubePlayer():
             self.common.log("BLAAAAAAAAAAAAAAAAAAAAAA: " + repr(self.settings.getSetting("lang_code")))
             self.subtitles.addSubtitles(video)
 
-        if (get("watch_later") == "true" and get("playlist_entry_id")):
-            self.common.log(u"removing video from watch later playlist")
-            self.core.remove_from_watch_later(params)
+        if self.settings.getSetting("removelater") == "true":
+            if (get("watch_later") == "true" and get("playlist_entry_id")):
+                self.common.log(u"removing video from watch later playlist")
+                self.core.remove_from_watch_later(params)
 
         self.storage.storeValue("vidstatus-" + video['videoid'], "7")
 
